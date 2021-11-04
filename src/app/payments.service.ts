@@ -16,6 +16,7 @@ export class PaymentsService {
   // endpoint:string = "https://payment-api-roy.herokuapp.com/api/PaymentDetail"
   // endpoint:string = "http://localhost:5000/api/PaymentDetail"
   endpoint:string = "https://fp-payment-roy.herokuapp.com/api/PaymentDetail"
+  endpoint_auth:string = "https://payment-api-jwt-roy.herokuapp.com/api/AuthManagement"
 
   constructor(private http:HttpClient) { }
 
@@ -50,6 +51,21 @@ export class PaymentsService {
       .delete(api)
       .pipe( catchError(this.handleError) )
   }
+
+  authLogin(data: Object): Observable<any> {
+    const api = `${this.endpoint_auth}/Login`;
+    return this.http
+      .post(api, data)
+      .pipe( catchError(this.handleError) )
+  }
+
+  authRegister(data: Object): Observable<any> {
+    const api = `${this.endpoint_auth}/register`;
+    return this.http
+      .post(api, data)
+      .pipe( catchError(this.handleError) )
+  }
+
 
   handleError(error: HttpErrorResponse) {
     let msg='';

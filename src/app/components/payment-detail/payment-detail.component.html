@@ -3,7 +3,9 @@
 <button (click)="openDialog(reqerror)">ErrorDialog</button>
 <button (click)="openDialog(loadDialog)">loadDialog</button>
 <button (click)="openLoadDialog()">loadDialogTimer</button>
-<button (click)="openConfirmDialog()">loadDialogTimer</button> -->
+<button (click)="openConfirmDialog()">loadDialogTimer</button>
+<button (click)="openLoginDialog()">openLoginDialog</button>
+<button (click)="openRegisterDialog()">openRegisterDialog</button> -->
 
 
 <ng-template #reqsuccess>
@@ -40,8 +42,58 @@
 	</mat-dialog-actions>
 </ng-template>
 
+<div *ngIf="loggedIn==false">
+	<div class="container center">
+		Silahkan login terlebih dahulu
+	</div>
+	<div class="container center">
+		<button mat-button (click)="openLoginDialog()" >Login</button>
+		<button mat-button (click)="openRegisterDialog()" >Register</button>
+	</div>	
+</div>
 
-<mat-grid-list cols="10" rowHeight="500px">
+<ng-template #loginDialog>
+	<mat-dialog-content>
+		<h2>Login</h2>
+		<mat-form-field class="example-full-width" appearance="outline">
+			<mat-label>Email: </mat-label>
+			<input type="email" matInput placeholder="Ex. Roychan" [(ngModel)]="login_email" value="">
+		</mat-form-field>
+		<mat-form-field class="example-full-width" appearance="outline">
+			<mat-label>Password: </mat-label>
+			<input type="password" matInput placeholder="Ex. Roychan" [(ngModel)]="login_password" value="">
+		</mat-form-field>
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button mat-button mat-dialog-close (click)="inputLogin()">Login</button>
+		<button mat-button mat-dialog-close>Cancel</button>
+	</mat-dialog-actions>
+</ng-template>
+
+<ng-template #registerDialog>
+	<mat-dialog-content>
+		<h2>Register</h2>
+		<mat-form-field class="example-full-width" appearance="outline">
+			<mat-label>Username: </mat-label>
+			<input type="text" matInput placeholder="Ex. roychanmeliaz" [(ngModel)]="register_username" value="">
+		</mat-form-field>
+		<mat-form-field class="example-full-width" appearance="outline">
+			<mat-label>Email: </mat-label>
+			<input type="email" matInput placeholder="Ex. mail@mail.com" [(ngModel)]="register_email" value="">
+		</mat-form-field>
+		<mat-form-field class="example-full-width" appearance="outline">
+			<mat-label>Password: </mat-label>
+			<input type="password" matInput placeholder="" [(ngModel)]="register_password" value="">
+		</mat-form-field>
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button mat-button mat-dialog-close (click)="inputRegister()">Register</button>
+		<button mat-button mat-dialog-close>Cancel</button>
+	</mat-dialog-actions>
+</ng-template>
+
+
+<mat-grid-list *ngIf="loggedIn==true" cols="10" rowHeight="500px">
     <mat-grid-tile colspan='4'>
 		<!-- start input form -->
 		<div class="inside-grid">

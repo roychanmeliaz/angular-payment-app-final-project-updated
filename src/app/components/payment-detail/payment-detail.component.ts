@@ -21,6 +21,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 export class PaymentDetailComponent implements OnInit {
 
+  loggedIn=false;
 
   // mat table
   displayedColumns: string[] = ['paymentDetailId', 'cardOwnerName', 'cardNumber', 'expirationDate', 'actions'];
@@ -86,6 +87,16 @@ export class PaymentDetailComponent implements OnInit {
   @ViewChild('reqerror', { static: true }) reqerror!:  TemplateRef<any>;
   @ViewChild('loadDialog', { static: true }) loadDialog!:  TemplateRef<any>;
   @ViewChild('confirmDialog', { static: true }) confirmDialog!:  TemplateRef<any>;
+  @ViewChild('loginDialog', { static: true }) loginDialog!:  TemplateRef<any>;
+  @ViewChild('registerDialog', { static: true }) registerDialog!:  TemplateRef<any>;
+
+  // login_email:string="new_user@example.com";
+  // login_password:string="Password_123";
+  login_email:string="";
+  login_password:string="";
+  register_username:string="";
+  register_email:string="";
+  register_password:string="";
 
   ngOnInit(): void {
     this.getPayments();
@@ -107,6 +118,14 @@ export class PaymentDetailComponent implements OnInit {
     this.openDialog(this.reqerror);
   }
 
+  openLoginDialog() {
+    this.openDialog(this.loginDialog);
+  }
+  openRegisterDialog() {
+    this.openDialog(this.registerDialog);
+  }
+
+
   openLoadDialog() {
     return this.dialog.open(this.loadDialog, {
       disableClose: true,
@@ -117,6 +136,81 @@ export class PaymentDetailComponent implements OnInit {
     return this.dialog.open(this.confirmDialog, {
       //  width: '300px'
     });
+  }
+
+  inputLogin() {
+    console.log(this.login_email);
+    console.log(this.login_password);
+    const data:Object = {
+      email: this.login_email,
+      password: this.login_password
+    }
+    console.log(data)
+    let loadDialogRef = this.openLoadDialog();
+    // start sending data
+    this.paymentsService.authLogin(data)
+    .subscribe(
+      (res) => {
+        this.loggedIn=true;
+        loadDialogRef.close();
+        this.openSuccessDialog()
+        console.log("add success response:")
+        console.log(res)
+        if (res) {
+          // formDirective.resetForm();
+          // this.openSnackBar("Add success!", "OK");
+          // this.inputMode=0;
+          this.getPayments();
+        }
+      },
+      (err) => {
+        loadDialogRef.close();
+        console.log("start err")
+        console.log(err)
+        console.log(err.error.message)
+        console.log("end err")  
+        this.openErrorDialog()
+        // this.openSnackBar("Error! " + err.error.message, "OK");
+      }
+    );
+  }
+
+  inputRegister() {
+    console.log(this.register_username);
+    console.log(this.register_email);
+    console.log(this.register_password);
+    const data:Object = {
+      username: this.register_username,
+      email: this.register_email,
+      password: this.register_password
+    }
+    console.log(data)
+    let loadDialogRef = this.openLoadDialog();
+    // start sending data
+    this.paymentsService.authRegister(data)
+    .subscribe(
+      (res) => {
+        loadDialogRef.close();
+        this.openSuccessDialog()
+        console.log("add success response:")
+        console.log(res)
+        if (res) {
+          // formDirective.resetForm();
+          // this.openSnackBar("Add success!", "OK");
+          // this.inputMode=0;
+          this.getPayments();
+        }
+      },
+      (err) => {
+        loadDialogRef.close();
+        console.log("start err")
+        console.log(err)
+        console.log(err.error.message)
+        console.log("end err")  
+        this.openErrorDialog()
+        // this.openSnackBar("Error! " + err.error.message, "OK");
+      }
+    );
   }
   
   getPayments() {

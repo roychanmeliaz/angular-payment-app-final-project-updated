@@ -14,6 +14,7 @@ import {MatProgressSpinnerModule, MatSpinner} from '@angular/material/progress-s
 // custom modules
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 // components
 import { AppComponent } from './app.component';
@@ -41,6 +42,7 @@ import { PaymentDetailComponent } from './components/payment-detail/payment-deta
     MatDialogModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
